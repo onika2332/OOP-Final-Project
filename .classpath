@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-11">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="lib" path="/home/onika2332/Downloads/georegression-v0.23-libs/GeoRegression-experimental-0.23.jar"/>
+	<classpathentry kind="lib" path="/home/onika2332/Downloads/georegression-v0.23-libs/GeoRegression-experimental-0.23-sources.jar"/>
+	<classpathentry kind="lib" path="/home/onika2332/Downloads/georegression-v0.23-libs/GeoRegression-georegression-0.23.jar"/>
+	<classpathentry kind="lib" path="/home/onika2332/Downloads/georegression-v0.23-libs/GeoRegression-georegression-0.23-sources.jar"/>
+	<classpathentry kind="lib" path="/home/onika2332/Downloads/georegression-v0.23-libs/ddogleg-0.19.jar"/>
+	<classpathentry kind="lib" path="/home/onika2332/Downloads/georegression-v0.23-libs/ejml-cdense-0.40.jar"/>
+	<classpathentry kind="lib" path="/home/onika2332/Downloads/georegression-v0.23-libs/ejml-core-0.40.jar"/>
+	<classpathentry kind="lib" path="/home/onika2332/Downloads/georegression-v0.23-libs/ejml-ddense-0.40.jar"/>
+	<classpathentry kind="lib" path="/home/onika2332/Downloads/georegression-v0.23-libs/ejml-dsparse-0.40.jar"/>
+	<classpathentry kind="lib" path="/home/onika2332/Downloads/georegression-v0.23-libs/ejml-fdense-0.40.jar"/>
+	<classpathentry kind="lib" path="/home/onika2332/Downloads/georegression-v0.23-libs/ejml-fsparse-0.40.jar"/>
+	<classpathentry kind="lib" path="/home/onika2332/Downloads/georegression-v0.23-libs/ejml-simple-0.40.jar"/>
+	<classpathentry kind="lib" path="/home/onika2332/Downloads/georegression-v0.23-libs/ejml-zdense-0.40.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
