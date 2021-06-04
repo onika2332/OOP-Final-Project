@@ -20,12 +20,5 @@ public class Point extends Point3D_F32 {
 		this.state = state;
 	}
 	
-//	public static Point getPointAt(float x, float y, float z) {
-//		if( Point(x,y,z) == null ) {
-//			Point p = new Point(x,y,z);
-//			return p;
-//		} else 
-//			return Point(x,y,z);
-//	}
 }
 

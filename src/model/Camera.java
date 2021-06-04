@@ -224,6 +224,46 @@ public class Camera extends Point3D_F32 {
 			}
 		}
 	}
-	
+	public boolean checkPointInLightField(Point aPoint) {
+		if(this.checkPointInRange(aPoint)) {
+			Line aLine = new Line();
+			aLine.setP(aPoint);
+			aLine.setSlope(aPoint.getX() - this.getX(), aPoint.getY() - this.getY(), aPoint.getZ() - this.getZ());
+			
+			if(this.ownPlane.getA() != 0) {
+				if(aPoint.getX() > this.getX()) {
+					for(float m = this.getX() + 0.01f; m < aPoint.getX(); m++)
+						if(aLine.getPointAtXLocation(m).getState() != State.Available)
+							return false;
+				} else {
+					for(float m = this.getX() - 0.01f; m < aPoint.getX(); m--)
+						if(aLine.getPointAtXLocation(m).getState() != State.Available)
+							return false;
+				}
+			} else if(this.ownPlane.getB() != 0) {
+				if(aPoint.getY() > this.getY()) {
+					for(float m = this.getY() + 0.01f; m < aPoint.getY(); m++)
+						if(aLine.getPointAtYLocation(m).getState() != State.Available)
+							return false;
+				} else {
+					for(float m = this.getY() - 0.01f; m < aPoint.getY(); m--)
+						if(aLine.getPointAtYLocation(m).getState() != State.Available)
+							return false;
+				}
+			} else {
+				if(aPoint.getZ() > this.getZ()) {
+					for(float m = this.getZ() + 0.01f; m < aPoint.getZ(); m++)
+						if(aLine.getPointAtZLocation(m).getState() != State.Available)
+							return false;
+				} else {
+					for(float m = this.getZ() - 0.01f; m < aPoint.getZ(); m--)
+						if(aLine.getPointAtZLocation(m).getState() != State.Available)
+							return false;
+				}
+			}
+			return true;
+		}
+		return false;
+	}
 	
 }
