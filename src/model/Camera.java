@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-public class Camera extends Point3D_F32 {
+public class Camera extends Point {
 	private int angle; // attribute ANGLE
 	private float range; // attribute range
 	private Plane ownPlane; // the plane where camera on ( ceiling or wall)
@@ -23,6 +23,13 @@ public class Camera extends Point3D_F32 {
 		return range;
 	}
 	
+	public void setProjectionPoint(Point p) {
+		this.projectionPoint = p;
+	}
+
+	public Point getProjectionPoint() {
+		return this.projectionPoint;
+	}
 	// get the plane own camera
 	public Plane getOwnPlane() {
 		return ownPlane;
@@ -35,12 +42,11 @@ public class Camera extends Point3D_F32 {
 	}
 
 	//check if camera on the wall or on the celling or not
-	public boolean checkCameraOnPlane(Room room) {
-		Iterator<Plane> iter = room.walls.iterator();
+	public boolean checkCameraOnFrame(Room room) {
+		Iterator<Frame> iter = room.walls.iterator();
 		while(iter.hasNext()) {
-			Plane curPlane = iter.next();
-			if(curPlane.checkPoint(this.getX(), this.getY(), this.getZ())) {
-				this.ownPlane = curPlane;
+			Frame curFrame = iter.next();
+			if(curFrame.checkPointInsideFrame((Point)this)) {
 				return true;
 			}	
 		}
@@ -93,7 +99,7 @@ public class Camera extends Point3D_F32 {
 												room.getHeight());
 			}
 		}
-		this.projectionPoint = center;
+		this.setProjectionPoint(center);
 		float tanA = (float)Math.tan(Math.toRadians(this.angle));
 		float temp = this.range*(tanA/2);
 		if(this.ownPlane.getA() != 0) {

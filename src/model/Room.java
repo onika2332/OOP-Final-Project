@@ -1,5 +1,4 @@
 package model;
-import georegression.struct.point.Point3D_F32;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -8,8 +7,8 @@ public class Room extends AbstractObject {
 	private float length;
 	private float width;
 	private float height;
-	List<Plane> walls = new ArrayList<Plane>();
-	public List<Plane> getWalls() {
+	List<Frame> walls = new ArrayList<Frame>();
+	public List<Frame> getWalls() {
 		return walls;
 	}
 
@@ -54,28 +53,27 @@ public class Room extends AbstractObject {
 	public Room(Point p1, Point p2, Point p3, Point p4,
 				Point p5, Point p6, Point p7, Point p8) {
 		super(p1,p2,p3,p4,p5,p6,p7,p8);
-		Vector p12 = new Vector(p1,p2);	//  p1,5,8,4; p2,3,7,6 mat ben
-		Vector p41 = new Vector(p4,p1);	//  p1,2,6,5; p4,3,7,8	mat ben
-		Vector p15 = new Vector(p1,p5); //  p1,2,3,4; p5,6,7,8 mat day
+		// Vector p12 = new Vector(p1,p2);	//  p1,5,8,4; p2,3,7,6 mat ben
+		// Vector p41 = new Vector(p4,p1);	//  p1,2,6,5; p4,3,7,8	mat ben
+		// Vector p15 = new Vector(p1,p5); //  p1,2,3,4; p5,6,7,8 mat day
 		
-		Plane p1234 = roomPlane(p15,p1);
-		Plane p5678 =  roomPlane(p15,p5);
+		Frame p1234 = new Frame(p1, p2, p3, p4);
+		Frame p5678 =  new Frame(p5, p6, p7, p8);
+		Frame p1584 = new Frame(p1, p5, p8, p4);
+		Frame p2376 = new Frame(p2, p3, p7, p6);
+		Frame p1265 = new Frame(p1, p2, p6, p5);
+		Frame p4378 = new Frame(p4, p3, p7, p8);
 		
-		Plane p1584 = roomPlane(p12, p1);
-		Plane p2376 = roomPlane(p12, p2);
-		Plane p1265 = roomPlane(p41, p1);
-		Plane p4378 = roomPlane(p41, p4);
-		
-		walls.add(0,p1234);
+		walls.add(p1234);
 		walls.add(p5678);
 		walls.add(p1584);
 		walls.add(p2376);
 		walls.add(p1265);
 		walls.add(p4378);
 		
-		setHeight(p12.vectoLeng());
-		setWidth(p41.vectoLeng());
-		setLength(p12.vectoLeng());
+		// setHeight(p12.vectoLeng());
+		// setWidth(p41.vectoLeng());
+		// setLength(p12.vectoLeng());
 		
 //		for(float i = p1.getX(); i <= p7.getX(); i+= 0.01) {
 //			for(float j = p1.getY(); i <= p7.getY(); j+= 0.01) {

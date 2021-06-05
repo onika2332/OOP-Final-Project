@@ -11,8 +11,11 @@ public class Vector extends Vector3D_F32 {
 		super(x,y,z);
 	}
 	
-	public Vector(Point3D_F32 p1, Point3D_F32 p2) {
-		super(p1,p2);
+	public Vector(Point p1, Point p2) {
+		super();
+		this.setX(p1.getX() - p2.getX());
+		this.setX(p1.getY() - p2.getY());
+		this.setX(p1.getZ() - p2.getZ());
 	}
 	
 	public boolean isParallel(Vector v) {
@@ -33,10 +36,10 @@ public class Vector extends Vector3D_F32 {
 									 + this.getZ()*this.getZ());
 		return leng;
 	}
-	public  Vector Directional(Vector a, Vector b) {
-		float n1 = (a.getY()*b.getZ() - a.getZ()*b.getY());
-		float n2 = -(a.getX()*b.getZ() - a.getZ()*b.getX());
-		float n3 = (a.getX()*b.getY() - a.getY()*b.getX());
+	public  Vector Directional(Vector b) {
+		float n1 = (this.getY()*b.getZ() - this.getZ()*b.getY());
+		float n2 = -(this.getX()*b.getZ() - this.getZ()*b.getX());
+		float n3 = (this.getX()*b.getY() - this.getY()*b.getX());
 		Vector n = new Vector(n1,n2,n3);
 		return n;
 	}
