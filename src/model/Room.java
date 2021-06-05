@@ -8,6 +8,7 @@ public class Room extends AbstractObject {
 	private float width;
 	private float height;
 	List<Frame> walls = new ArrayList<Frame>();
+	List<Point> hiddens; // set of hidden point
 	public List<Frame> getWalls() {
 		return walls;
 	}

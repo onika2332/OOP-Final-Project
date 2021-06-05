@@ -260,9 +260,6 @@ public class Camera extends Point {
 				if(aPoint.getZ() > this.getZ()) {
 					for(float m = this.getZ() + 0.01f; m < aPoint.getZ(); m++)
 						if(aLine.getPointAtZLocation(m).getState() == State.Hidden || aLine.getPointAtZLocation(m).getState() == State.OnSide)
-							// alpha : Avalable, Hidden, InsideCamera, OnSide
-							// Hidden : aPoint -> hidden
-							// OnSide: aPoint -> hidden
 							return false;
 				} else {
 					for(float m = this.getZ() - 0.01f; m < aPoint.getZ(); m--)
