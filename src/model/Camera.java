@@ -1,24 +1,28 @@
 package model;
-import georegression.struct.point.Point3D_F32;
-import georegression.struct.line.LineParametric3D_F32;
 import java.lang.Math;
-import java.util.List;
-import java.util.ArrayList;
 import java.util.Iterator;
 
 public class Camera extends Point {
 	private int angle; // attribute ANGLE
 	private float range; // attribute range
 	private Plane ownPlane; // the plane where camera on ( ceiling or wall)
-	private List<Point> shadow; // this is shadow of camera on the opposite plane
-	private Plane oppositePlane; // the opposite plane of which own camera, own the shadow
+	private Frame shadow; // this is shadow of camera on the opposite plane
+	private Frame oppositeFrame; // the opposite plane of which own camera, own the shadow
 	private Point projectionPoint; // the project of camera ( point ) is in opposite plane 
-	// get Angle of camera
+	
+	public void setShadow(Point p1, Point p2, Point p3, Point p4) {
+		this.shadow = new Frame(p1, p2, p3, p4);
+	}
+	
+	public void setOppositeFrame(Frame f){
+		this.oppositeFrame = f;
+	}
+	
 	public int getAngle() {
 		return angle;
 	}
 	
-	// get range
+	
 	public float getRange() {
 		return range;
 	}
@@ -43,60 +47,59 @@ public class Camera extends Point {
 
 	//check if camera on the wall or on the celling or not
 	public boolean checkCameraOnFrame(Room room) {
-		Iterator<Frame> iter = room.walls.iterator();
-		while(iter.hasNext()) {
-			Frame curFrame = iter.next();
+		Iterator<Frame> iter1 = room.walls.iterator();
+		while(iter1.hasNext()) {
+			Frame curFrame = iter1.next();
 			if(curFrame.checkPointInsideFrame((Point)this)) {
+				// we set opposite frame for camera before return true
+				Iterator<Frame> iter2 = room.walls.iterator();
+				while (iter2.hasNext()) {
+					Frame oFrame = iter2.next();
+					if(curFrame.getOwnPlane().isParallel(oFrame.getOwnPlane())) {
+						this.setOppositeFrame(oFrame);
+						break;
+					}
+				}
 				return true;
 			}	
 		}
 		return false;
 	}
 	//determine the shadow of camera in the opposite plane
-	public List<Point> getShadow(Room room) {
-		this.shadow = new ArrayList<Point>();
+	public Frame getShadow(Room room) {
+		this.shadow = new Frame();
 		// case "The camera's range < distance of 2 plane" hasn't been solved
 		Point center;
 		if(this.ownPlane.getD() != 0) {
 			if(this.getRange() >= this.ownPlane.getD())
 				this.range = this.ownPlane.getD();
-			this.oppositePlane = new Plane(this.ownPlane.getA(),
-											this.ownPlane.getB(),
-											this.ownPlane.getC(),
-											0);
 			if(this.ownPlane.getA() != 0) {
-				center = new Point(0, this.getY(), this.getZ());
+				Line aLine = new Line(this, this.ownPlane.getNormalVector());
+				center = aLine.getPointAtXLocation(0);
 			} else if(this.ownPlane.getB() != 0) {
-				center = new Point(this.getX(),0, this.getZ());
+				Line aLine = new Line(this, this.ownPlane.getNormalVector());
+				center = aLine.getPointAtYLocation(0);
 			} else {
-				center = new Point(this.getX(),this.getY(),0);
+				Line aLine = new Line(this, this.ownPlane.getNormalVector());
+				center = aLine.getPointAtZLocation(0);
 			}
 		} else {
 			// D = 0
 			if(this.ownPlane.getA() != 0) {
-				center = new Point(room.getLength(), this.getY(), this.getZ());
 				if(this.range >= room.getLength()) 
 					this.range = room.getLength();
-				this.oppositePlane = new Plane(this.ownPlane.getA(),
-												this.ownPlane.getB(),
-												this.ownPlane.getC(),
-												room.getLength());
+				Line aLine = new Line(this, this.ownPlane.getNormalVector());
+				center = aLine.getPointAtXLocation(room.getLength());
 			} else if(this.ownPlane.getB() != 0) {
-				center = new Point(this.getX(),room.getWidth(), this.getZ());
 				if(this.range >= room.getWidth()) 
 					this.range = room.getWidth();
-				this.oppositePlane = new Plane(this.ownPlane.getA(),
-												this.ownPlane.getB(),
-												this.ownPlane.getC(),
-												room.getWidth());
+				Line aLine = new Line(this, this.ownPlane.getNormalVector());
+				center = aLine.getPointAtYLocation(room.getWidth());
 			} else {
-				center = new Point(this.getX(),this.getY(),room.getHeight());
+				Line aLine = new Line(this, this.ownPlane.getNormalVector());
+				center = aLine.getPointAtZLocation(room.getHeight());
 				if(this.range >= room.getHeight()) 
 					this.range = room.getHeight();
-				this.oppositePlane = new Plane(this.ownPlane.getA(),
-												this.ownPlane.getB(),
-												this.ownPlane.getC(),
-												room.getHeight());
 			}
 		}
 		this.setProjectionPoint(center);
@@ -107,72 +110,47 @@ public class Camera extends Point {
 			Point p2 = new Point(center.getX(), center.getY() - temp, center.getZ() + temp);
 			Point p3 = new Point(center.getX(), center.getY() + temp, center.getZ() - temp);
 			Point p4 = new Point(center.getX(), center.getY() + temp, center.getZ() + temp);
-			this.shadow.add(p1);
-			this.shadow.add(p2);
-			this.shadow.add(p3);
-			this.shadow.add(p4);
+			this.setShadow(p1, p2, p3, p4);
 		} else if(this.ownPlane.getB() != 0) {
 			Point p1 = new Point(center.getX() - temp, center.getY(), center.getZ() - temp);
 			Point p2 = new Point(center.getX() - temp, center.getY(), center.getZ() + temp);
 			Point p3 = new Point(center.getX() + temp, center.getY(), center.getZ() - temp);
 			Point p4 = new Point(center.getX() + temp, center.getY(), center.getZ() + temp);
-			this.shadow.add(p1);
-			this.shadow.add(p2);
-			this.shadow.add(p3);
-			this.shadow.add(p4);
+			this.setShadow(p1, p2, p3, p4);
 		} else {
 			Point p1 = new Point(center.getX() - temp, center.getY() - temp, center.getZ());
 			Point p2 = new Point(center.getX() - temp, center.getY() + temp, center.getZ());
 			Point p3 = new Point(center.getX() + temp, center.getY() - temp, center.getZ());
 			Point p4 = new Point(center.getX() + temp, center.getY() + temp, center.getZ());
-			this.shadow.add(p1);
-			this.shadow.add(p2);
-			this.shadow.add(p3);
-			this.shadow.add(p4);
+			this.setShadow(p1, p2, p3, p4);
 		}
 		return this.shadow;
 	}
 	// check a point in range of camera or not
 	public boolean checkPointInRange(Point aPoint) {
-		float checkVar = this.oppositePlane.getA()*aPoint.getX()
-						+ this.oppositePlane.getB()*aPoint.getY()
-						+ this.oppositePlane.getC()*aPoint.getZ();
-		if( this.oppositePlane.getD() == checkVar ) {
+		float checkVar = this.oppositeFrame.getOwnPlane().getA()*aPoint.getX()
+						+ this.oppositeFrame.getOwnPlane().getB()*aPoint.getY()
+						+ this.oppositeFrame.getOwnPlane().getC()*aPoint.getZ();
+		if( this.oppositeFrame.getOwnPlane().getD() == checkVar ) {
 			// case : aPoint is in the oppositePlane 
 			
-			if(this.oppositePlane.getA() != 0) {
-				if(aPoint.getY() < this.shadow.get(0).getY()
-				|| aPoint.getZ() < this.shadow.get(0).getZ()
-				|| aPoint.getY() > this.shadow.get(2).getY()
-				|| aPoint.getZ() > this.shadow.get(2).getZ()) {
-					aPoint.state = State.Hidden;
+			if(this.oppositeFrame.getOwnPlane().getA() != 0) {
+				if(!this.shadow.checkPointInsideFrame(aPoint)) 
 					return false;
-				} else {
-					aPoint.state = State.InsideCamera;
+				else 
 					return true;
-				}
-			} else if(this.oppositePlane.getB() != 0) {
-				if(aPoint.getX() < this.shadow.get(0).getX()
-				|| aPoint.getZ() < this.shadow.get(0).getZ()
-				|| aPoint.getX() > this.shadow.get(2).getX()
-				|| aPoint.getZ() > this.shadow.get(2).getZ()) {
-					aPoint.state = State.Hidden;
+
+			} else if(this.oppositeFrame.getOwnPlane().getB() != 0) {
+				if(!this.shadow.checkPointInsideFrame(aPoint))
 					return false;
-				} else {
-					aPoint.state = State.InsideCamera;
+				else
 					return true;
-				}
+
 			} else {
-				if(aPoint.getY() < this.shadow.get(0).getY()
-				|| aPoint.getX() < this.shadow.get(0).getX()
-				|| aPoint.getY() > this.shadow.get(2).getY()
-				|| aPoint.getX() > this.shadow.get(2).getX()) {
-					aPoint.state = State.Hidden;
+				if(!this.shadow.checkPointInsideFrame(aPoint))
 					return false;
-				} else {
-					aPoint.state = State.InsideCamera;
+				else
 					return true;
-				}
 			}
 		} else {
 			Line aLine = new Line();
@@ -182,91 +160,79 @@ public class Camera extends Point {
 			float slopeC = this.z - aPoint.getZ();
 			
 			aLine.setSlope(slopeA, slopeB, slopeC);
-			float ts = this.oppositePlane.getD() - (this.oppositePlane.getA()*aPoint.getX()
-											+ this.oppositePlane.getB()*aPoint.getY()
-											+ this.oppositePlane.getC()*aPoint.getZ());
+			float ts = this.oppositeFrame.getOwnPlane().getD() - (this.oppositeFrame.getOwnPlane().getA()*aPoint.getX()
+																+ this.oppositeFrame.getOwnPlane().getB()*aPoint.getY()
+																+ this.oppositeFrame.getOwnPlane().getC()*aPoint.getZ());
 			
-			float ms = slopeA*this.oppositePlane.getA()
-					+ slopeB*this.oppositePlane.getB()
-					+ slopeC*this.oppositePlane.getC();
+			float ms = slopeA*this.oppositeFrame.getOwnPlane().getA()
+					+ slopeB*this.oppositeFrame.getOwnPlane().getB()
+					+ slopeC*this.oppositeFrame.getOwnPlane().getC();
 			
 			float t = ts / ms;
 			Point intersection = new Point(aPoint.getX() + slopeA*t,
 											aPoint.getY() + slopeB*t,
 											aPoint.getZ() + slopeC*t);
-			if(this.oppositePlane.getA() != 0) {
-				if(intersection.getY() < this.shadow.get(0).getY()
-				|| intersection.getZ() < this.shadow.get(0).getZ()
-				|| intersection.getY() > this.shadow.get(2).getY()
-				|| intersection.getZ() > this.shadow.get(2).getZ()) {
-					intersection.state = State.Hidden;
+			if(this.oppositeFrame.getOwnPlane().getA() != 0) {
+				if(!this.shadow.checkPointInsideFrame(intersection)) 
 					return false;
-				} else {
-					intersection.state = State.InsideCamera;
+				else 
 					return true;
-				}
-			} else if(this.oppositePlane.getB() != 0) {
-				if(intersection.getX() < this.shadow.get(0).getX()
-				|| intersection.getZ() < this.shadow.get(0).getZ()
-				|| intersection.getX() > this.shadow.get(2).getX()
-				|| intersection.getZ() > this.shadow.get(2).getZ()) {
-					intersection.state = State.Hidden;
+			} else if(this.oppositeFrame.getOwnPlane().getB() != 0) {
+				if(!this.shadow.checkPointInsideFrame(intersection)) 
 					return false;
-				} else {
-					intersection.state = State.InsideCamera;
+				else 
 					return true;
-				}
 			} else {
-				if(intersection.getY() < this.shadow.get(0).getY()
-				|| intersection.getX() < this.shadow.get(0).getX()
-				|| intersection.getY() > this.shadow.get(2).getY()
-				|| intersection.getX() > this.shadow.get(2).getX()) {
-					intersection.state = State.Hidden;
+				if(!this.shadow.checkPointInsideFrame(intersection)) 
 					return false;
-				} else {
-					intersection.state = State.InsideCamera;
+				else 
 					return true;
-				}
 			}
 		}
 	}
+
+	// true : state ---> Light
+	// false : state is still Available ( for traverse with next camera)
 	public boolean checkPointInLightField(Point aPoint) {
 		if(this.checkPointInRange(aPoint)) {
+			// Create a line of 2 point : camera & point in parameter
 			Line aLine = new Line();
 			aLine.setP(aPoint);
 			aLine.setSlope(aPoint.getX() - this.getX(), aPoint.getY() - this.getY(), aPoint.getZ() - this.getZ());
 			
-			if(this.ownPlane.getA() != 0) {
+
+			if(this.ownPlane.getA() != 0) { // if the normal vector like (1,0,0)
 				if(aPoint.getX() > this.getX()) {
 					for(float m = this.getX() + 0.01f; m < aPoint.getX(); m++)
-						if(aLine.getPointAtXLocation(m).getState() != State.Available)
+						if(aLine.getPointAtXLocation(m).getState() == State.OnSide)
 							return false;
 				} else {
 					for(float m = this.getX() - 0.01f; m < aPoint.getX(); m--)
-						if(aLine.getPointAtXLocation(m).getState() != State.Available)
+						if(aLine.getPointAtXLocation(m).getState() != State.OnSide)
 							return false;
 				}
 			} else if(this.ownPlane.getB() != 0) {
 				if(aPoint.getY() > this.getY()) {
 					for(float m = this.getY() + 0.01f; m < aPoint.getY(); m++)
-						if(aLine.getPointAtYLocation(m).getState() != State.Available)
+						if(aLine.getPointAtYLocation(m).getState() != State.OnSide)
 							return false;
 				} else {
 					for(float m = this.getY() - 0.01f; m < aPoint.getY(); m--)
-						if(aLine.getPointAtYLocation(m).getState() != State.Available)
+						if(aLine.getPointAtYLocation(m).getState() != State.OnSide)
 							return false;
 				}
 			} else {
 				if(aPoint.getZ() > this.getZ()) {
 					for(float m = this.getZ() + 0.01f; m < aPoint.getZ(); m++)
-						if(aLine.getPointAtZLocation(m).getState() == State.Hidden || aLine.getPointAtZLocation(m).getState() == State.OnSide)
+						if(aLine.getPointAtZLocation(m).getState() == State.OnSide)
 							return false;
 				} else {
 					for(float m = this.getZ() - 0.01f; m < aPoint.getZ(); m--)
-						if(aLine.getPointAtZLocation(m).getState() != State.Available)
+						if(aLine.getPointAtZLocation(m).getState() != State.OnSide)
 							return false;
 				}
 			}
+			aPoint.state = State.Light;
 			return true;
 		}
 		return false;

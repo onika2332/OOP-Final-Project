@@ -1,7 +1,6 @@
 package model;
 import georegression.struct.plane.PlaneGeneral3D_F32;
-import georegression.struct.point.Point3D_F32;
-import georegression.struct.point.Vector3D_F32;
+
 public class Plane extends PlaneGeneral3D_F32 {
 	public Plane() {
 		super();
@@ -31,6 +30,14 @@ public class Plane extends PlaneGeneral3D_F32 {
 		this.setB(n.getY());
 		this.setC(n.getZ());
 		this.setD(n.getX()*p1.getX() + n.getY()*p1.getY() + n.getZ()*p1.getZ());
+	}
+
+	public boolean isParallel(Plane p) {
+		Vector v = p.getNormalVector();
+		if(this.getNormalVector().isParallel(v))
+			if(this.getD() != p.getD())
+				return true;
+		return false;
 	}
 	
 }

@@ -15,7 +15,7 @@ public class testRoom{
 		Point p7 = new Point(4,3,2);
 		Point p8 = new Point(0,3,2);
 		Room r  = new Room(p1,p2,p3,p4,p5,p6,p7,p8);
-		if(r.checkObject(p1,p2,p3,p4,p5,p6,p7,p8)) {
+		if(r.isBox(p1,p2,p3,p4,p5,p6,p7,p8)) {
 				//chuong trinh chinh:
 			System.out.println(r.getWalls());
 			System.out.println(r.getHeight());
