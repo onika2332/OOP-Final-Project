@@ -31,30 +31,6 @@ public class Object extends Box {
 			room.setObjectsInRoom(this);
 		else 
 			System.out.println("This object is invalid. Not inside the room");
-		// for(float i = p1.getX(); i <= p7.getX(); i+= 0.01) {
-		// 	for(float j = p1.getY(); i <= p7.getY(); j+= 0.01) {
-		// 		for(float k = p1.getZ(); i <= p7.getZ(); k+= 0.01) {
-		// 			if(i == p1.getX() || i == p7.getX()) {
-		// 				Point p = new Point(i,j,k);
-		// 				p.setState(State.OnSide);
-		// 			} else if(j == p1.getY() || j == p7.getY()) {
-		// 				Point p = new Point(i,j,k);
-		// 				p.setState(State.OnSide);
-		// 			} else if(k == p1.getZ() || k == p7.getZ()) {
-		// 				if((k == p1.getZ()) && (i != p1.getX()) && (i != p3.getX()) && (j != p1.getY()) && (j != p3.getY())) {
-		// 					Point p = new Point(i,j,k);
-		// 					p.setState(State.Hidden);
-		// 				} else {
-		// 					Point p = new Point(i,j,k);
-		// 					p.setState(State.OnSide);
-		// 				}			
-		// 			} else {
-		// 				Point p = new Point(i,j,k);
-		// 				p.setState(State.Hidden);
-		// 			}
-		// 		}
-		// 	}
-		// }
 
 	}
 		
@@ -66,6 +42,16 @@ public class Object extends Box {
 				return false;
 		}
 		return true;
+	}
+
+	public boolean checkOnSide(Point p) {
+		if(this.topFrame.checkPointInsideFrame(p))
+			return true;
+		for (Frame frame : sideFrame) {
+			if(frame.checkPointInsideFrame(p))
+				return true;
+		}
+		return false;
 	}
 	
 	

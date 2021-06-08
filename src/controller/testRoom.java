@@ -44,15 +44,16 @@ public class testRoom{
 
 		System.out.println(r.getObjects().size());
 
-		System.out.println(r.getHeight() * r.getLength() * r.getWidth() * 1000000); // correct
+		System.out.println(r.getHeight() * r.getLength() * r.getWidth() * 8000); // correct
 
 		r.setStateForAllPoints();
 		System.out.println(r.getAvailablePoint().size());
+		System.out.println(r.getHiddenPoint().size());
 
-		// obj1 : 1 1 1 --> 100 100 100 --> 10000 point Available, 990000 hidden
-		// obj2 : 1 1 1 --> 100 100 100 --> 10000 point Available, 990000 hidden
-
-		// total point : 4 * 3 * 2 * 1000000 = 24000000 point
+		// obj1 : 1 1 1 --> 20 20 20 --> 400*5 point of object are Available, hidden --> 8000 - 2000 = 6000
+		// obj2 : 1 1 1 --> 20 20 20 --> 400*5 point of object are Available, hidden --> 8000 - 2000 = 6000
+		// total hidden is 12000
+		// total point : 4 * 3 * 2 * 8000 = 192000 point
 
 		
 

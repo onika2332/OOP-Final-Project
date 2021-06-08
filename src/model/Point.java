@@ -11,7 +11,6 @@ public class Point extends Point3D_F32 {
 		this.x = x;
 		this.y = y;
 		this.z = z;
-		this.state = State.None;
 	}
 
 	public State getState() {

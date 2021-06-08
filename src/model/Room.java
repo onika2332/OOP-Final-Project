@@ -14,8 +14,13 @@ public class Room extends Box {
 
 	List<Point> lightPoint = new ArrayList<Point>();
 	List<Point> availablePoint = new ArrayList<Point>();
+	List<Point> hiddenPoint = new ArrayList<Point>();
 	
 	
+	public List<Point> getHiddenPoint() {
+		return hiddenPoint;
+	}
+
 	public List<Point> getLightPoint() {
 		return lightPoint;
 	}
@@ -111,11 +116,12 @@ public class Room extends Box {
 	}
 
 	public void setStateForAllPoints() {
-		for(float i = p1.getX(); i <= p7.getX(); i+= 0.01) {
-			for(float j = p1.getY(); j <= p7.getY(); j+= 0.01) {
-				for(float k = p1.getZ(); k <= p7.getZ(); k+= 0.01) {
+		for(float i = p1.getX(); i <= p7.getX(); i = i + 0.05f) {
+			for(float j = p1.getY(); j <= p7.getY(); j = j +  0.05f) {
+				for(float k = p1.getZ(); k <= p7.getZ(); k = k + 0.05f) {
 					// create point
 					Point p = new Point(i,j,k);
+					p.setState(State.None);
 
 					// set state for point
 					Iterator<Object> iter = objects.iterator();
@@ -124,12 +130,15 @@ public class Room extends Box {
 						if(obj.checkPointOnFloor(p) || p.isInsideObject(obj)) {
 							// if point inside object or on the floor frame of object
 							p.setState(State.Hidden);
+							this.getHiddenPoint().add(p);
 							break;
+						} else if(obj.checkOnSide(p)) {
+							p.setState(State.OnSide);
 						}
 					}
 					if(p.getState() == State.None) {
 						p.setState(State.Available);
-						this.availablePoint.add(p);
+						this.getAvailablePoint().add(p);
 					}
 				}
 			}

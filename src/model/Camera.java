@@ -217,31 +217,31 @@ public class Camera extends Point {
 			// find the normal vector to determined x or y or z (++ or --)
 			if(this.ownPlane.getA() != 0) {
 				if(aPoint.getX() > this.getX()) {
-					for(float m = this.getX() + 0.01f; m < aPoint.getX(); m++)
+					for(float m = this.getX() + 0.05f; m < aPoint.getX(); m = m + 0.05f)
 						if(aLine.getPointAtXLocation(m).getState() == State.OnSide)
 							return false;
 				} else {
-					for(float m = this.getX() - 0.01f; m > aPoint.getX(); m--)
+					for(float m = this.getX() - 0.05f; m > aPoint.getX(); m = m - 0.05f)
 						if(aLine.getPointAtXLocation(m).getState() != State.OnSide)
 							return false;
 				}
 			} else if(this.ownPlane.getB() != 0) {
 				if(aPoint.getY() > this.getY()) {
-					for(float m = this.getY() + 0.01f; m < aPoint.getY(); m++)
+					for(float m = this.getY() + 0.05f; m < aPoint.getY(); m = m + 0.05f)
 						if(aLine.getPointAtYLocation(m).getState() != State.OnSide)
 							return false;
 				} else {
-					for(float m = this.getY() - 0.01f; m > aPoint.getY(); m--)
+					for(float m = this.getY() - 0.05f; m > aPoint.getY(); m = m - 0.05f)
 						if(aLine.getPointAtYLocation(m).getState() != State.OnSide)
 							return false;
 				}
 			} else {
 				if(aPoint.getZ() > this.getZ()) {
-					for(float m = this.getZ() + 0.01f; m < aPoint.getZ(); m++)
+					for(float m = this.getZ() + 0.05f; m < aPoint.getZ(); m = m + 0.05f)
 						if(aLine.getPointAtZLocation(m).getState() == State.OnSide)
 							return false;
 				} else {
-					for(float m = this.getZ() - 0.01f; m > aPoint.getZ(); m--)
+					for(float m = this.getZ() - 0.05f; m > aPoint.getZ(); m = m - 0.05f)
 						if(aLine.getPointAtZLocation(m).getState() != State.OnSide)
 							return false;
 				}
