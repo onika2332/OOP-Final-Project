@@ -8,7 +8,9 @@ public class Point extends Point3D_F32 {
 	}
 	
 	public Point(float x, float y, float z) {
-		super(x,y,z);
+		this.x = x;
+		this.y = y;
+		this.z = z;
 	}
 
 	public State getState() {

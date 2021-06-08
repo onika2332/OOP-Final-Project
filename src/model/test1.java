@@ -3,7 +3,6 @@ package model;
 public class test1 {
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
 		System.out.println("***************************************************");
 		
 		Point p1 = new Point(0,0,0);
@@ -14,23 +13,25 @@ public class test1 {
 		Point p6 = new Point(4,0,5);
 		Point p7 = new Point(4,3,5);
 		Point p8 = new Point(0,3,5);
-		
 
-		Camera c1 = new Camera(2, 2, 5, 90, 50);
+		Point p = new Point(0,0,0);
+		Camera c1 = new Camera(2,2,5,30,50);
 		Room r = new Room(p1,p2,p3,p4,p5,p6,p7,p8);
+
 		System.out.println(c1.checkCameraOnFrame(r) + "\n11111111111");
-		Point p = new Point(1,2,0);
 		System.out.println(c1.checkPointInRange(r,p) + "\n2222222222222222222"); 
 		System.out.println(c1.checkPointInLightField(r,p) + "\n33333333333333333333");
-
-
-		Point v1 = new Point(-3,-3,0);
-		Point v2 = new Point(-3,7,0);
-		Point v3 = new Point(7,7,0);
-		Point v4 = new Point(7,-3,0);
-		Frame f = new Frame(v1, v2, v3, v4);
-		Point v5 = new Point(7,7,0);
-		System.out.println(f.checkPointInsideFrame(v5));
+		// this method change "z" value of lighted point????????????????????????/
+		// Line aLine = new Line(c1, p);
+		// System.out.println(c1.getX() + "|"
+		// 					+ c1.getY() + "|"
+		// 					+ c1.getZ() + "|");
+		// System.out.println(p.getX() + "|"
+		// 					+ p.getY() + "|"
+		// 					+ p.getZ() + "|");
+		// System.out.println(aLine.getSlopeX() + "|"
+		// 					+ aLine.getSlopeY() + "|"
+		// 					+ aLine.getSlopeZ() + "|");
 
 		System.out.println("***************************************************");
 	}

@@ -217,18 +217,16 @@ public class Camera extends Point {
 	public boolean checkPointInLightField(Room room, Point aPoint) {
 		if(this.checkPointInRange(room, aPoint)) {
 			// Create a line of 2 point : camera & point in parameter
-			Line aLine = new Line();
-			aLine.setP(aPoint);
-			aLine.setSlope(aPoint.getX() - this.getX(), aPoint.getY() - this.getY(), aPoint.getZ() - this.getZ());
-			
+			Line aLine = new Line(this, aPoint);
 
-			if(this.ownPlane.getA() != 0) { // if the normal vector like (1,0,0)
+			// find the normal vector to determined x or y or z (++ or --)
+			if(this.ownPlane.getA() != 0) {
 				if(aPoint.getX() > this.getX()) {
 					for(float m = this.getX() + 0.01f; m < aPoint.getX(); m++)
 						if(aLine.getPointAtXLocation(m).getState() == State.OnSide)
 							return false;
 				} else {
-					for(float m = this.getX() - 0.01f; m < aPoint.getX(); m--)
+					for(float m = this.getX() - 0.01f; m > aPoint.getX(); m--)
 						if(aLine.getPointAtXLocation(m).getState() != State.OnSide)
 							return false;
 				}
@@ -238,7 +236,7 @@ public class Camera extends Point {
 						if(aLine.getPointAtYLocation(m).getState() != State.OnSide)
 							return false;
 				} else {
-					for(float m = this.getY() - 0.01f; m < aPoint.getY(); m--)
+					for(float m = this.getY() - 0.01f; m > aPoint.getY(); m--)
 						if(aLine.getPointAtYLocation(m).getState() != State.OnSide)
 							return false;
 				}
@@ -248,7 +246,7 @@ public class Camera extends Point {
 						if(aLine.getPointAtZLocation(m).getState() == State.OnSide)
 							return false;
 				} else {
-					for(float m = this.getZ() - 0.01f; m < aPoint.getZ(); m--)
+					for(float m = this.getZ() - 0.01f; m > aPoint.getZ(); m--)
 						if(aLine.getPointAtZLocation(m).getState() != State.OnSide)
 							return false;
 				}
