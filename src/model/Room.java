@@ -11,10 +11,26 @@ public class Room extends Box {
 	List<Frame> walls = new ArrayList<Frame>();
 	//Map<Frame,Frame> walls = new HashMap<Frame,Frame>();
 	List<Object> objects = new ArrayList<Object>();
+
+	List<Point> lightPoint = new ArrayList<Point>();
+	List<Point> availablePoint = new ArrayList<Point>();
+	
+	
+	public List<Point> getLightPoint() {
+		return lightPoint;
+	}
+
+	public List<Point> getAvailablePoint() {
+		return availablePoint;
+	}
+
 	public List<Frame> getWalls() {
 		return walls;
 	}
 
+	public List<Object> getObjects() {
+		return this.objects;
+	}
 	public void setObjectsInRoom(Object obj) {
 			this.objects.add(obj);
 	}
@@ -96,8 +112,8 @@ public class Room extends Box {
 
 	public void setStateForAllPoints() {
 		for(float i = p1.getX(); i <= p7.getX(); i+= 0.01) {
-			for(float j = p1.getY(); i <= p7.getY(); j+= 0.01) {
-				for(float k = p1.getZ(); i <= p7.getZ(); k+= 0.01) {
+			for(float j = p1.getY(); j <= p7.getY(); j+= 0.01) {
+				for(float k = p1.getZ(); k <= p7.getZ(); k+= 0.01) {
 					// create point
 					Point p = new Point(i,j,k);
 
@@ -105,17 +121,25 @@ public class Room extends Box {
 					Iterator<Object> iter = objects.iterator();
 					while(iter.hasNext()) {
 						Object obj = iter.next();
-						if(p.isInsideObject(obj))
-							if(obj.checkPointOnSide(p))
-								p.setState(State.Available);
-							else
-								p.setState(State.Hidden);
-						else 
-							p.setState(State.Available);
+						if(obj.checkPointOnFloor(p) || p.isInsideObject(obj)) {
+							// if point inside object or on the floor frame of object
+							p.setState(State.Hidden);
+							break;
+						}
+					}
+					if(p.getState() == State.None) {
+						p.setState(State.Available);
+						this.availablePoint.add(p);
 					}
 				}
 			}
 		}		
+	}
+
+	public float countLightVolume() {
+		int ts = this.getLightPoint().size();
+		int ms = (int)(this.getHeight()*this.getLength()*this.getWidth()*1000000);
+		return ts/ms;
 	}
 	
 }

@@ -48,10 +48,8 @@ public class Box {
 	}
 
 	public boolean isInside(Box bigBox) {
-		if(this.p1.isInsideObject(bigBox) && this.p2.isInsideObject(bigBox)
-		&& this.p3.isInsideObject(bigBox) && this.p4.isInsideObject(bigBox)
-		&& this.p5.isInsideObject(bigBox) && this.p6.isInsideObject(bigBox)
-		&& this.p7.isInsideObject(bigBox) && this.p8.isInsideObject(bigBox))
+		if(this.p1.getX() >= bigBox.p1.getX() && this.p1.getY() >= bigBox.p1.getY() && this.p1.getZ() >= bigBox.p1.getZ()
+		&& this.p7.getX() <= bigBox.p7.getX() && this.p7.getY() <= bigBox.p7.getY() && this.p7.getZ() <= bigBox.p7.getZ())
 			return true;
 		return false;
 	}

@@ -1,4 +1,5 @@
 package model;
+import java.util.ArrayList;
 import java.util.List;
 public class Object extends Box {
 	
@@ -6,7 +7,7 @@ public class Object extends Box {
 	Frame topFrame;  // is FRAME 5,6,7,8
 	
 	// 4 side plane
-	List<Frame> sideFrame;
+	List<Frame> sideFrame = new ArrayList<Frame>();
 	
 	// When init object, we assign reference for each point of object ( Available : on plane, InsideObject : hidden )
 	
@@ -26,7 +27,10 @@ public class Object extends Box {
 		this.sideFrame.add(p2376);
 		this.sideFrame.add(p3487);
 
-		room.setObjectsInRoom(this);
+		if(this.isInside(room))
+			room.setObjectsInRoom(this);
+		else 
+			System.out.println("This object is invalid. Not inside the room");
 		// for(float i = p1.getX(); i <= p7.getX(); i+= 0.01) {
 		// 	for(float j = p1.getY(); i <= p7.getY(); j+= 0.01) {
 		// 		for(float k = p1.getZ(); i <= p7.getZ(); k+= 0.01) {
@@ -54,14 +58,14 @@ public class Object extends Box {
 
 	}
 		
-	public boolean checkPointOnSide(Point p) {
+	public boolean checkPointOnFloor(Point p) {
 		if(this.topFrame.checkPointInsideFrame(p))
-			return true;
+			return false;
 		for (Frame frame : sideFrame) {
 			if(frame.checkPointInsideFrame(p))
-				return true;
+				return false;
 		}
-		return false;
+		return true;
 	}
 	
 	

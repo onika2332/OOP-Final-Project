@@ -159,10 +159,6 @@ public class Camera extends Point {
 	// check a point in range of camera or not
 	public boolean checkPointInRange(Room room, Point aPoint) {
 		this.setShadow(room);
-		// System.out.println(this.getShadow().p1 + "\n"
-		// 					+ this.getShadow().p2 + "\n"
-		// 					+ this.getShadow().p3 + "\n"
-		// 					+ this.getShadow().p4 + "\n"); 
 		float checkVar = this.oppositeFrame.getOwnPlane().getA()*aPoint.getX()
 						+ this.oppositeFrame.getOwnPlane().getB()*aPoint.getY()
 						+ this.oppositeFrame.getOwnPlane().getC()*aPoint.getZ();
@@ -211,7 +207,6 @@ public class Camera extends Point {
 			}
 		}
 	}
-
 	// true : state ---> Light
 	// false : state is still Available ( for traverse with next camera)
 	public boolean checkPointInLightField(Room room, Point aPoint) {
@@ -252,6 +247,8 @@ public class Camera extends Point {
 				}
 			}
 			aPoint.state = State.Light;
+			room.getLightPoint().add(aPoint);
+			room.getAvailablePoint().remove(aPoint);
 			return true;
 		}
 		return false;

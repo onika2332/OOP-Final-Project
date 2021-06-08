@@ -11,6 +11,7 @@ public class Point extends Point3D_F32 {
 		this.x = x;
 		this.y = y;
 		this.z = z;
+		this.state = State.None;
 	}
 
 	public State getState() {
@@ -23,12 +24,10 @@ public class Point extends Point3D_F32 {
 
 	// point can be inside or onside
 	public boolean isInsideObject(Box box) {
-		if(this.getX() < box.p1.getX() || this.getY() < box.p1.getY() ||this.getZ() < box.p1.getZ())
-			return false;
-		else if(this.getX() > box.p7.getX() || this.getY() > box.p7.getY() ||this.getZ() > box.p7.getZ())
-			return false;
-		
-		return true;
+		if(this.getX() > box.p1.getX() && this.getY() > box.p1.getY() && this.getZ() > box.p1.getZ()
+		&& this.getX() < box.p7.getX() && this.getY() < box.p7.getY() && this.getZ() < box.p7.getZ())
+			return true;
+		return false;
 	}
 	
 }
