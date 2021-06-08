@@ -70,7 +70,7 @@ public class Frame {
                 else
                     return true;
             } else if(this.ownPlane.getB() != 0) {
-                // the normal is like (1,0,0), so we access x and z
+                // the normal is like (0,1,0), so we access x and z
                 if(this.p1.getX() > p.getX() || this.p3.getX() < p.getX())
                     return false;
                 if(this.p1.getZ() > p.getZ() || this.p3.getZ() < p.getZ())
@@ -78,7 +78,7 @@ public class Frame {
                 else
                     return true;
             } else {
-                // the normal is like (1,0,0), so we access y and z
+                // the normal is like (0,0,1), so we access y and z
                 if(this.p1.getY() > p.getY() || this.p3.getY() < p.getY())
                     return false;
                 if(this.p1.getX() > p.getX() || this.p3.getX() < p.getX())

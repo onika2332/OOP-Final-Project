@@ -10,10 +10,22 @@ public class Camera extends Point {
 	private Frame oppositeFrame; // the opposite plane of which own camera, own the shadow
 	private Point projectionPoint; // the project of camera ( point ) is in opposite plane 
 	
+	
+	public void setAngle(int angle) {
+		this.angle = angle;
+	}
+
+	public void setRange(float range) {
+		this.range = range;
+	}
+
 	public void setShadow(Point p1, Point p2, Point p3, Point p4) {
 		this.shadow = new Frame(p1, p2, p3, p4);
 	}
 	
+	public Frame getShadow() {
+		return this.shadow;
+	}
 	// How can we set the oppositeFrame for camera inside constructor, we need push Room object as a parameter??????
 	public void setOppositeFrame(Room room) {
 		if(this.ownPlane.getD() == 0 ) {
@@ -86,17 +98,21 @@ public class Camera extends Point {
 		// case "The camera's range < distance of 2 plane" hasn't been solved
 		Point center;
 		if(this.ownPlane.getD() != 0) {
-			if(this.getRange() >= this.ownPlane.getD())
-				this.range = this.ownPlane.getD();
 			if(this.ownPlane.getA() != 0) {
 				Line aLine = new Line(this, this.ownPlane.getNormalVector());
 				center = aLine.getPointAtXLocation(0);
+				if(this.getRange() >= ( this.ownPlane.getD() / this.ownPlane.getA() ))
+					this.range = this.ownPlane.getD()/this.ownPlane.getA();
 			} else if(this.ownPlane.getB() != 0) {
 				Line aLine = new Line(this, this.ownPlane.getNormalVector());
 				center = aLine.getPointAtYLocation(0);
+				if(this.getRange() >= ( this.ownPlane.getD() / this.ownPlane.getB() ))
+					this.range = this.ownPlane.getD()/this.ownPlane.getB();
 			} else {
 				Line aLine = new Line(this, this.ownPlane.getNormalVector());
 				center = aLine.getPointAtZLocation(0);
+				if(this.getRange() >= ( this.ownPlane.getD() / this.ownPlane.getC() ))
+					this.range = this.ownPlane.getD()/this.ownPlane.getC();
 			}
 		} else {
 			// D = 0
@@ -118,55 +134,45 @@ public class Camera extends Point {
 			}
 		}
 		this.setProjectionPoint(center);
-		float tanA = (float)Math.tan(Math.toRadians(this.angle));
-		float temp = this.range*(tanA/2);
+		double tanAlpha = (float)Math.tan(Math.toRadians(this.angle/2));
+		float temp = (float)(this.range*tanAlpha);
 		if(this.ownPlane.getA() != 0) {
 			Point p1 = new Point(center.getX(), center.getY() - temp, center.getZ() - temp);
 			Point p2 = new Point(center.getX(), center.getY() - temp, center.getZ() + temp);
-			Point p3 = new Point(center.getX(), center.getY() + temp, center.getZ() - temp);
-			Point p4 = new Point(center.getX(), center.getY() + temp, center.getZ() + temp);
+			Point p3 = new Point(center.getX(), center.getY() + temp, center.getZ() + temp);
+			Point p4 = new Point(center.getX(), center.getY() + temp, center.getZ() - temp);
 			this.setShadow(p1, p2, p3, p4);
 		} else if(this.ownPlane.getB() != 0) {
 			Point p1 = new Point(center.getX() - temp, center.getY(), center.getZ() - temp);
 			Point p2 = new Point(center.getX() - temp, center.getY(), center.getZ() + temp);
-			Point p3 = new Point(center.getX() + temp, center.getY(), center.getZ() - temp);
-			Point p4 = new Point(center.getX() + temp, center.getY(), center.getZ() + temp);
+			Point p3 = new Point(center.getX() + temp, center.getY(), center.getZ() + temp);
+			Point p4 = new Point(center.getX() + temp, center.getY(), center.getZ() - temp);
 			this.setShadow(p1, p2, p3, p4);
 		} else {
 			Point p1 = new Point(center.getX() - temp, center.getY() - temp, center.getZ());
 			Point p2 = new Point(center.getX() - temp, center.getY() + temp, center.getZ());
-			Point p3 = new Point(center.getX() + temp, center.getY() - temp, center.getZ());
-			Point p4 = new Point(center.getX() + temp, center.getY() + temp, center.getZ());
+			Point p3 = new Point(center.getX() + temp, center.getY() + temp, center.getZ());
+			Point p4 = new Point(center.getX() + temp, center.getY() - temp, center.getZ());
 			this.setShadow(p1, p2, p3, p4);
 		}
 	}
 	// check a point in range of camera or not
 	public boolean checkPointInRange(Room room, Point aPoint) {
 		this.setShadow(room);
+		// System.out.println(this.getShadow().p1 + "\n"
+		// 					+ this.getShadow().p2 + "\n"
+		// 					+ this.getShadow().p3 + "\n"
+		// 					+ this.getShadow().p4 + "\n"); 
 		float checkVar = this.oppositeFrame.getOwnPlane().getA()*aPoint.getX()
 						+ this.oppositeFrame.getOwnPlane().getB()*aPoint.getY()
 						+ this.oppositeFrame.getOwnPlane().getC()*aPoint.getZ();
+		// System.out.println(checkVar);
 		if( this.oppositeFrame.getOwnPlane().getD() == checkVar ) {
 			// case : aPoint is in the oppositePlane 
-			
-			if(this.oppositeFrame.getOwnPlane().getA() != 0) {
-				if(!this.shadow.checkPointInsideFrame(aPoint)) 
+			if(!this.shadow.checkPointInsideFrame(aPoint)) 
 					return false;
-				else 
+			else 
 					return true;
-
-			} else if(this.oppositeFrame.getOwnPlane().getB() != 0) {
-				if(!this.shadow.checkPointInsideFrame(aPoint))
-					return false;
-				else
-					return true;
-
-			} else {
-				if(!this.shadow.checkPointInsideFrame(aPoint))
-					return false;
-				else
-					return true;
-			}
 		} else {
 			Line aLine = new Line();
 			aLine.setP(aPoint);
