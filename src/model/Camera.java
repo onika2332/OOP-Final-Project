@@ -14,8 +14,29 @@ public class Camera extends Point {
 		this.shadow = new Frame(p1, p2, p3, p4);
 	}
 	
-	public void setOppositeFrame(Frame f){
-		this.oppositeFrame = f;
+	// How can we set the oppositeFrame for camera inside constructor, we need push Room object as a parameter??????
+	public void setOppositeFrame(Room room) {
+		if(this.ownPlane.getD() == 0 ) {
+			if(this.ownPlane.getA() != 0) {
+				this.oppositeFrame = new Frame(room.p3, room.p4, room.p8, room.p7);
+			} else if(this.ownPlane.getB() != 0) {
+				this.oppositeFrame = new Frame(room.p2, room.p3, room.p7, room.p6);
+			} else {
+				this.oppositeFrame = new Frame(room.p5, room.p6, room.p7, room.p8);
+			}
+		} else {
+			if(this.ownPlane.getA() != 0) {
+				this.oppositeFrame = new Frame(room.p1, room.p2, room.p6, room.p5);
+			} else if(this.ownPlane.getB() != 0) {
+				this.oppositeFrame = new Frame(room.p1, room.p4, room.p8, room.p5);
+			} else {
+				this.oppositeFrame = new Frame(room.p1, room.p2, room.p3, room.p4);
+			}
+		}
+	}
+
+	public Frame getOppositeFrame() {
+		return this.oppositeFrame;
 	}
 	
 	public int getAngle() {
@@ -51,22 +72,16 @@ public class Camera extends Point {
 		while(iter1.hasNext()) {
 			Frame curFrame = iter1.next();
 			if(curFrame.checkPointInsideFrame((Point)this)) {
-				// we set opposite frame for camera before return true
-				Iterator<Frame> iter2 = room.walls.iterator();
-				while (iter2.hasNext()) {
-					Frame oFrame = iter2.next();
-					if(curFrame.getOwnPlane().isParallel(oFrame.getOwnPlane())) {
-						this.setOppositeFrame(oFrame);
-						break;
-					}
-				}
+				this.ownPlane = curFrame.ownPlane;
+				this.setOppositeFrame(room);
 				return true;
 			}	
 		}
 		return false;
 	}
 	//determine the shadow of camera in the opposite plane
-	public Frame getShadow(Room room) {
+	public void setShadow(Room room) {
+		this.setOppositeFrame(room);
 		this.shadow = new Frame();
 		// case "The camera's range < distance of 2 plane" hasn't been solved
 		Point center;
@@ -124,10 +139,10 @@ public class Camera extends Point {
 			Point p4 = new Point(center.getX() + temp, center.getY() + temp, center.getZ());
 			this.setShadow(p1, p2, p3, p4);
 		}
-		return this.shadow;
 	}
 	// check a point in range of camera or not
-	public boolean checkPointInRange(Point aPoint) {
+	public boolean checkPointInRange(Room room, Point aPoint) {
+		this.setShadow(room);
 		float checkVar = this.oppositeFrame.getOwnPlane().getA()*aPoint.getX()
 						+ this.oppositeFrame.getOwnPlane().getB()*aPoint.getY()
 						+ this.oppositeFrame.getOwnPlane().getC()*aPoint.getZ();
@@ -193,8 +208,8 @@ public class Camera extends Point {
 
 	// true : state ---> Light
 	// false : state is still Available ( for traverse with next camera)
-	public boolean checkPointInLightField(Point aPoint) {
-		if(this.checkPointInRange(aPoint)) {
+	public boolean checkPointInLightField(Room room, Point aPoint) {
+		if(this.checkPointInRange(room, aPoint)) {
 			// Create a line of 2 point : camera & point in parameter
 			Line aLine = new Line();
 			aLine.setP(aPoint);

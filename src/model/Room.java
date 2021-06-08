@@ -2,6 +2,8 @@ package model;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Map;
+import java.util.HashMap;
 
 public class Room extends Box {
 	// we use length, width, height for count volume of room ( = length * width * height )
@@ -9,6 +11,7 @@ public class Room extends Box {
 	private float width;
 	private float height;
 	List<Frame> walls = new ArrayList<Frame>();
+	//Map<Frame,Frame> walls = new HashMap<Frame,Frame>();
 	List<Object> objects = new ArrayList<Object>();
 	public List<Frame> getWalls() {
 		return walls;

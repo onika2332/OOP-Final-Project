@@ -23,6 +23,10 @@ public class testRoom{
 		} else {
 			// ket thuc
 		}
+
+		
+
+
 	}
 
 }

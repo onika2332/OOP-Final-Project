@@ -13,8 +13,8 @@ public class Vector extends Vector3D_F32 {
 	public Vector(Point p1, Point p2) {
 		super();
 		this.setX(p1.getX() - p2.getX());
-		this.setX(p1.getY() - p2.getY());
-		this.setX(p1.getZ() - p2.getZ());
+		this.setY(p1.getY() - p2.getY());
+		this.setZ(p1.getZ() - p2.getZ());
 	}
 	
 	public boolean isParallel(Vector v) {
