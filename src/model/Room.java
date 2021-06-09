@@ -159,7 +159,7 @@ public class Room extends Box {
 
 	public float countLightVolume() {
 		int ts = this.getLightPoint().size();
-		int ms = (int)(this.getHeight()*this.getLength()*this.getWidth()*1000000);
+		int ms = (int)(this.getHeight()*this.getLength()*this.getWidth()*8000);
 		return ts/ms;
 	}
 	

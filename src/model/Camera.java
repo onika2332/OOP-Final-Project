@@ -28,6 +28,9 @@ public class Camera extends Point {
 	}
 	// How can we set the oppositeFrame for camera inside constructor, we need push Room object as a parameter??????
 	public void setOppositeFrame(Room room) {
+		if((!room.checkOnSide(this)){
+			return;
+		}
 		if(this.ownPlane.getD() == 0 ) {
 			if(this.ownPlane.getA() != 0) {
 				this.oppositeFrame = new Frame(room.p3, room.p4, room.p8, room.p7);
@@ -76,6 +79,7 @@ public class Camera extends Point {
 		super(x,y,z);
 		this.angle = angle;
 		this.range = range;
+		
 	}
 
 	//check if camera on the wall or on the celling or not

@@ -4,10 +4,6 @@ import java.util.List;
 public class Object extends Box {
 	
 	// list of point on the top plane of object, we only need 4 point was the frame of plane, e.x 5,6,7,8
-	Frame topFrame, bottomFrame;  // is FRAME 5,6,7,8
-	
-	// 4 side plane
-	List<Frame> sideFrame = new ArrayList<Frame>();
 	
 	// When init object, we assign reference for each point of object ( Available : on plane, InsideObject : hidden )
 	
@@ -43,15 +39,7 @@ public class Object extends Box {
 		return false;
 	}
 
-	public boolean checkOnSide(Point p) {
-		if(this.topFrame.checkPointInsideFrame(p))
-			return true;
-		for (Frame frame : sideFrame) {
-			if(frame.checkPointInsideFrame(p))
-				return true;
-		}
-		return false;
-	}
+	
 	
 	
 }

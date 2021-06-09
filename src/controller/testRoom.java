@@ -1,9 +1,12 @@
 package controller;
 
 import model.Room;
+
+import java.util.Iterator;
+
+import model.Camera;
 import model.Object;
 import model.Point;
-
 public class testRoom{
 
 	public static void main(String[] args){
@@ -50,7 +53,16 @@ public class testRoom{
 		r.setStateForAllPoints();
 		System.out.println(r.getAvailablePoint().size());
 		System.out.println(r.getHiddenPoint().size());
-
+		System.out.println(r.countLightVolume());
+		
+		Camera c1 = new Camera(2,2,5,30,50);
+		Iterator<Point> iter = r.getAvailablePoint().iterator();
+		while(iter.hasNext()) {
+		Point p = iter.next();
+		if(c1.checkPointInLightField(r, p))
+		r.getLightPoint().add(p);
+		}
+		r.countLightVolume();
 		// obj1 : 1 1 1 --> 20 20 20 --> 400*5 point of object are Available, hidden --> 8000 - 2000 = 6000
 		// obj2 : 1 1 1 --> 20 20 20 --> 400*5 point of object are Available, hidden --> 8000 - 2000 = 6000
 		// total hidden is 12000

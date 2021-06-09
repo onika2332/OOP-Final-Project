@@ -1,7 +1,15 @@
 package model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Box {
 	// 8 location of object
+	Frame topFrame, bottomFrame;  // is FRAME 5,6,7,8
+	
+	// 4 side plane
+	List<Frame> sideFrame = new ArrayList<Frame>();
+	
 	public Point p1, p2, p3, p4, p5, p6, p7, p8;
 	public Box() {
 		
@@ -53,6 +61,14 @@ public class Box {
 			return true;
 		return false;
 	}
-	
+	public boolean checkOnSide(Point p) {
+		if(this.topFrame.checkPointInsideFrame(p))
+			return true;
+		for (Frame frame : sideFrame) {
+			if(frame.checkPointInsideFrame(p))
+				return true;
+		}
+		return false;
+	}
 
 }
