@@ -6,18 +6,18 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="lib" path="/home/onika2332/Downloads/georegression-v0.23-libs/GeoRegression-experimental-0.23.jar"/>
-	<classpathentry kind="lib" path="/home/onika2332/Downloads/georegression-v0.23-libs/GeoRegression-experimental-0.23-sources.jar"/>
-	<classpathentry kind="lib" path="/home/onika2332/Downloads/georegression-v0.23-libs/GeoRegression-georegression-0.23.jar"/>
-	<classpathentry kind="lib" path="/home/onika2332/Downloads/georegression-v0.23-libs/GeoRegression-georegression-0.23-sources.jar"/>
-	<classpathentry kind="lib" path="/home/onika2332/Downloads/georegression-v0.23-libs/ddogleg-0.19.jar"/>
-	<classpathentry kind="lib" path="/home/onika2332/Downloads/georegression-v0.23-libs/ejml-cdense-0.40.jar"/>
-	<classpathentry kind="lib" path="/home/onika2332/Downloads/georegression-v0.23-libs/ejml-core-0.40.jar"/>
-	<classpathentry kind="lib" path="/home/onika2332/Downloads/georegression-v0.23-libs/ejml-ddense-0.40.jar"/>
-	<classpathentry kind="lib" path="/home/onika2332/Downloads/georegression-v0.23-libs/ejml-dsparse-0.40.jar"/>
-	<classpathentry kind="lib" path="/home/onika2332/Downloads/georegression-v0.23-libs/ejml-fdense-0.40.jar"/>
-	<classpathentry kind="lib" path="/home/onika2332/Downloads/georegression-v0.23-libs/ejml-fsparse-0.40.jar"/>
-	<classpathentry kind="lib" path="/home/onika2332/Downloads/georegression-v0.23-libs/ejml-simple-0.40.jar"/>
-	<classpathentry kind="lib" path="/home/onika2332/Downloads/georegression-v0.23-libs/ejml-zdense-0.40.jar"/>
+	<classpathentry kind="lib" path="C:/Users/tuan/eclipse-workspace/georegression-v0.23-libs/georegression-v0.23-libs/ddogleg-0.19.jar"/>
+	<classpathentry kind="lib" path="C:/Users/tuan/eclipse-workspace/georegression-v0.23-libs/georegression-v0.23-libs/ejml-cdense-0.40.jar"/>
+	<classpathentry kind="lib" path="C:/Users/tuan/eclipse-workspace/georegression-v0.23-libs/georegression-v0.23-libs/ejml-core-0.40.jar"/>
+	<classpathentry kind="lib" path="C:/Users/tuan/eclipse-workspace/georegression-v0.23-libs/georegression-v0.23-libs/ejml-ddense-0.40.jar"/>
+	<classpathentry kind="lib" path="C:/Users/tuan/eclipse-workspace/georegression-v0.23-libs/georegression-v0.23-libs/ejml-dsparse-0.40.jar"/>
+	<classpathentry kind="lib" path="C:/Users/tuan/eclipse-workspace/georegression-v0.23-libs/georegression-v0.23-libs/ejml-fdense-0.40.jar"/>
+	<classpathentry kind="lib" path="C:/Users/tuan/eclipse-workspace/georegression-v0.23-libs/georegression-v0.23-libs/ejml-fsparse-0.40.jar"/>
+	<classpathentry kind="lib" path="C:/Users/tuan/eclipse-workspace/georegression-v0.23-libs/georegression-v0.23-libs/ejml-simple-0.40.jar"/>
+	<classpathentry kind="lib" path="C:/Users/tuan/eclipse-workspace/georegression-v0.23-libs/georegression-v0.23-libs/ejml-zdense-0.40.jar"/>
+	<classpathentry kind="lib" path="C:/Users/tuan/eclipse-workspace/georegression-v0.23-libs/georegression-v0.23-libs/GeoRegression-experimental-0.23.jar"/>
+	<classpathentry kind="lib" path="C:/Users/tuan/eclipse-workspace/georegression-v0.23-libs/georegression-v0.23-libs/GeoRegression-experimental-0.23-sources.jar"/>
+	<classpathentry kind="lib" path="C:/Users/tuan/eclipse-workspace/georegression-v0.23-libs/georegression-v0.23-libs/GeoRegression-georegression-0.23.jar"/>
+	<classpathentry kind="lib" path="C:/Users/tuan/eclipse-workspace/georegression-v0.23-libs/georegression-v0.23-libs/GeoRegression-georegression-0.23-sources.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

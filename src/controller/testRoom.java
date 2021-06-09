@@ -26,8 +26,8 @@ public class testRoom{
 		Point v7 = new Point(1,1,1);
 		Point v8 = new Point(0,1,1);
 		Object obj1 = new Object(v1, v2, v3, v4, v5, v6, v7, v8, r);
-		System.out.println(obj1.isInside(r));
-
+		System.out.println(r.getObjects().size());
+		
 		Point _v1 = new Point(1,1,0);
 		Point _v2 = new Point(2,1,0);
 		Point _v3 = new Point(2,2,0);
@@ -40,6 +40,7 @@ public class testRoom{
 		
 		System.out.println("******************************");
 		
+		System.out.println("******************************");
 		System.out.println(obj2.isInside(r));
 
 		System.out.println(r.getObjects().size());

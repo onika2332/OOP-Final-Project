@@ -4,7 +4,7 @@ import java.util.List;
 public class Object extends Box {
 	
 	// list of point on the top plane of object, we only need 4 point was the frame of plane, e.x 5,6,7,8
-	Frame topFrame;  // is FRAME 5,6,7,8
+	Frame topFrame, bottomFrame;  // is FRAME 5,6,7,8
 	
 	// 4 side plane
 	List<Frame> sideFrame = new ArrayList<Frame>();
@@ -17,6 +17,8 @@ public class Object extends Box {
 		super(p1,p2,p3,p4,p5,p6,p7,p8);
 		
 		this.topFrame = new Frame(p5, p6, p7, p8);
+		this.bottomFrame = new Frame(p1,p2,p3,p4);
+//		this.bottomFrame.setOwnPlane(null);
 		Frame p1584 = new Frame(p1, p5, p8, p4);
 		Frame p2376 = new Frame(p2, p3, p7, p6);
 		Frame p1265 = new Frame(p1, p2, p6, p5);
@@ -35,13 +37,10 @@ public class Object extends Box {
 	}
 		
 	public boolean checkPointOnFloor(Point p) {
-		if(this.topFrame.checkPointInsideFrame(p))
-			return false;
-		for (Frame frame : sideFrame) {
-			if(frame.checkPointInsideFrame(p))
-				return false;
+		if(this.bottomFrame.checkPointInsideFrame(p)) {
+			return true;
 		}
-		return true;
+		return false;
 	}
 
 	public boolean checkOnSide(Point p) {

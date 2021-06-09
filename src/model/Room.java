@@ -116,33 +116,45 @@ public class Room extends Box {
 	}
 
 	public void setStateForAllPoints() {
-		for(float i = p1.getX(); i <= p7.getX(); i = i + 0.05f) {
-			for(float j = p1.getY(); j <= p7.getY(); j = j +  0.05f) {
-				for(float k = p1.getZ(); k <= p7.getZ(); k = k + 0.05f) {
+		int count = 0;
+
+		// set state for point
+		for(float i = p1.getX(); i < p7.getX(); i = i + 0.05f) {
+			for(float j = p1.getY(); j < p7.getY(); j = j +  0.05f) {
+				for(float k = p1.getZ(); k < p7.getZ(); k = k + 0.05f) {
+					i = (float) ((double) Math.round(i * 1000) / 1000);
+					j = (float) ((double) Math.round(j * 1000) / 1000);
+					k = (float) ((double) Math.round(k * 1000) / 1000);
 					// create point
 					Point p = new Point(i,j,k);
+					
 					p.setState(State.None);
-
-					// set state for point
+					
 					Iterator<Object> iter = objects.iterator();
 					while(iter.hasNext()) {
 						Object obj = iter.next();
 						if(obj.checkPointOnFloor(p) || p.isInsideObject(obj)) {
+//							count ++;
+							
 							// if point inside object or on the floor frame of object
 							p.setState(State.Hidden);
 							this.getHiddenPoint().add(p);
 							break;
-						} else if(obj.checkOnSide(p)) {
+						} else if(obj.checkOnSide(p) ) {
+							
 							p.setState(State.OnSide);
+							count ++;
 						}
 					}
 					if(p.getState() == State.None) {
 						p.setState(State.Available);
 						this.getAvailablePoint().add(p);
+//						count ++;
 					}
 				}
 			}
-		}		
+		}
+		System.out.println("Onside : " + count);		
 	}
 
 	public float countLightVolume() {
